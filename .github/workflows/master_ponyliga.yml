@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://go.microsoft.com/fwlink/?linkid=2134798
 # More GitHub Actions for Azure: https://go.microsoft.com/fwlink/?linkid=2135048
 
-name: Azure App Service - ponyliga(Production), Build and deploy ASP .NET app
+name: Azure App Service - ponyliga(Production), Build and deploy DotnetCore app
 
 on:
   push:
@@ -18,22 +18,22 @@ jobs:
       uses: actions/checkout@master
 
 
-    - name: Setup MSBuild path
-      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.301'
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
 
-    - name: Restore NuGet packages
-      run: nuget restore
-
-    - name: Publish to folder
-      run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
+    - name: dotnet publish
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
       with:
         app-name: ponyliga
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C12AEE80807146BEAD285B67DA96B193 }}
-        package: \published\
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_68337ED5DE6C4032BC3949188185F758 }}
+        package: ${{env.DOTNET_ROOT}}/myapp
+
