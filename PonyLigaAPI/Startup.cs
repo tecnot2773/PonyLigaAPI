@@ -29,11 +29,7 @@ namespace PonyLigaAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PonyLigaAPIContext>(options =>
-            {
-                var connectionString = buildConnectionString();
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            });
+            services.AddDbContext<PonyLigaAPIContext>();
 
             services.AddControllers();
         }
@@ -78,7 +74,7 @@ namespace PonyLigaAPI
                 string password = groups[5].ToString();
 
                 connectionString = "server=" + server + ";userid=" + user + ";password=" + password + ";database=" + database + ";port=" + port;
-                connectionString = "server=" + server + ";database=pony_liga;user=" + user + ";password=" + password;
+                connectionString = "server=" + server + ";port=" + port + ";database=pony_liga;user=" + user + ";password=" + password;
             }
 
 

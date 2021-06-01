@@ -8,10 +8,10 @@ namespace PonyLigaAPI.Models
     public class User
     {
         public int id { get; set; }
-        public String first_name { get; set; }
-        public String sur_name { get; set; }
-        public String login_name { get; set; }
-        public String password_hash { get; set; }
+        public String firstName { get; set; }
+        public String surName { get; set; }
+        public String loginName { get; set; }
+        public String passwordHash { get; set; }
 
     }
 }
