@@ -12,12 +12,15 @@ namespace PonyLigaAPI.Models
     public class PonyLigaAPIContext : DbContext
     {
 
-        //public PonyLigaAPIContext(DbContextOptions<PonyLigaAPIContext> options) : base(options) { }
+        public PonyLigaAPIContext(DbContextOptions<PonyLigaAPIContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = buildConnectionString();
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = buildConnectionString();
+                optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            }
         }
 
         public DbSet<User> User { get; set; }

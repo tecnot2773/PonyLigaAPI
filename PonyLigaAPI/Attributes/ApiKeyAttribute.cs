@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PonyLigaAPI.Models;
@@ -27,8 +28,6 @@ namespace PonyLigaAPI.Attributes
 
             var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
-            var apiKey = findApiKey(extractedApiKey);
-
             if (!findApiKey(extractedApiKey))
             {
                 context.Result = new ContentResult()
@@ -44,7 +43,8 @@ namespace PonyLigaAPI.Attributes
 
         public static bool findApiKey(String extractedApiKey)
         {
-            PonyLigaAPIContext context = new PonyLigaAPIContext();
+            DbContextOptions<PonyLigaAPIContext> options = new DbContextOptions<PonyLigaAPIContext>();
+            PonyLigaAPIContext context = new PonyLigaAPIContext(options);
             var apiKeys = context.ApiKey.ToList();
             var count = context.ApiKey.Where(s => s.apiKey == extractedApiKey).Count();
             

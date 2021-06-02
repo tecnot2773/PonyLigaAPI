@@ -53,32 +53,5 @@ namespace PonyLigaAPI
                 endpoints.MapControllers();
             });
         }
-
-        public static string buildConnectionString()
-        {
-            // "server=localhost;database=library;user=mysqlschema;password=mypassword"
-            string connectionString = "";
-            string envConnectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb").ToString();
-            string regex = @".*=(\w*);.*=(.*):(.*);.*=(.*);.*=(.*)";
-
-            Regex rg = new Regex(regex);
-            MatchCollection matches = rg.Matches(envConnectionString);
-
-            foreach (Match match in matches)
-            {
-                GroupCollection groups = match.Groups;
-                string database = groups[1].ToString();
-                string server = groups[2].ToString();
-                string port = groups[3].ToString();
-                string user = groups[4].ToString();
-                string password = groups[5].ToString();
-
-                connectionString = "server=" + server + ";userid=" + user + ";password=" + password + ";database=" + database + ";port=" + port;
-                connectionString = "server=" + server + ";port=" + port + ";database=pony_liga;user=" + user + ";password=" + password;
-            }
-
-
-            return connectionString;
-        }
     }
 }

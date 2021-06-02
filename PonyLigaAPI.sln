@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonyLigaAPI", "PonyLigaAPI\PonyLigaAPI.csproj", "{46E586CE-E16F-42C8-AB86-ED1195577CA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PonyLigaAPI", "PonyLigaAPI\PonyLigaAPI.csproj", "{46E586CE-E16F-42C8-AB86-ED1195577CA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PonyLigaAPI.Tests", "PonyLigaAPI.Tests\PonyLigaAPI.Tests.csproj", "{6043FED0-271C-4AE3-A505-04F01D6195F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{46E586CE-E16F-42C8-AB86-ED1195577CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E586CE-E16F-42C8-AB86-ED1195577CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46E586CE-E16F-42C8-AB86-ED1195577CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6043FED0-271C-4AE3-A505-04F01D6195F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6043FED0-271C-4AE3-A505-04F01D6195F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6043FED0-271C-4AE3-A505-04F01D6195F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6043FED0-271C-4AE3-A505-04F01D6195F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
