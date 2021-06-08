@@ -28,7 +28,7 @@ namespace PonyLigaAPI.Attributes
 
             var appSettings = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
-            if (!findApiKey(extractedApiKey))
+            if (!FindApiKey(extractedApiKey))
             {
                 context.Result = new ContentResult()
                 {
@@ -41,7 +41,7 @@ namespace PonyLigaAPI.Attributes
             await next();
         }
 
-        public static bool findApiKey(String extractedApiKey)
+        public static bool FindApiKey(String extractedApiKey)
         {
             DbContextOptions<PonyLigaAPIContext> options = new DbContextOptions<PonyLigaAPIContext>();
             PonyLigaAPIContext context = new PonyLigaAPIContext(options);

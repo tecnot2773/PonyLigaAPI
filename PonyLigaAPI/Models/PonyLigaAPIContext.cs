@@ -18,7 +18,7 @@ namespace PonyLigaAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = buildConnectionString();
+                var connectionString = BuildConnectionString();
                 optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             }
         }
@@ -40,7 +40,7 @@ namespace PonyLigaAPI.Models
             });
         }
 
-        public static string buildConnectionString()
+        public static string BuildConnectionString()
         {
             // "server=localhost;database=library;user=mysqlschema;password=mypassword"
             string connectionString = "";
