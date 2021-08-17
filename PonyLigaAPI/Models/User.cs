@@ -12,6 +12,6 @@ namespace PonyLigaAPI.Models
         public String surName { get; set; }
         public String loginName { get; set; }
         public String passwordHash { get; set; }
-        public int userPrivilges { get; set; } 
+        public int userPrivileges { get; set; } 
     }
 }

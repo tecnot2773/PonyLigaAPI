@@ -9,7 +9,7 @@ namespace PonyLigaAPI.Tests
     {
         public static void Seed(this PonyLigaAPIContext dbContext)
         {
-            dbContext.User.Add(new User
+            dbContext.Users.Add(new User
             {
                 firstName = "Test",
                 surName = "Test",

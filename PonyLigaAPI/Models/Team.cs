@@ -13,5 +13,6 @@ namespace PonyLigaAPI.Models
         public string place { get; set; }
         public string consultor { get; set; }
         public int teamSize { get; set; }
+        public Group Group { get; set; }
     }
 }

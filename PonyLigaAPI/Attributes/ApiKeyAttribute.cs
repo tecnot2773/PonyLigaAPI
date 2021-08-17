@@ -45,8 +45,8 @@ namespace PonyLigaAPI.Attributes
         {
             DbContextOptions<PonyLigaAPIContext> options = new DbContextOptions<PonyLigaAPIContext>();
             PonyLigaAPIContext context = new PonyLigaAPIContext(options);
-            var apiKeys = context.ApiKey.ToList();
-            var count = context.ApiKey.Where(s => s.apiKey == extractedApiKey).Count();
+            var apiKeys = context.ApiKeys.ToList();
+            var count = context.ApiKeys.Where(s => s.apiKey == extractedApiKey).Count();
             
             if (count >= 1)
             {

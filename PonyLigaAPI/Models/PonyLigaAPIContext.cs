@@ -23,12 +23,73 @@ namespace PonyLigaAPI.Models
             }
         }
 
-        public DbSet<User> User { get; set; }
-        public DbSet<ApiKey> ApiKey { get; set; }
-
+        public DbSet<ApiKey> ApiKeys { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Pony> Ponies { get; set; }
+        public DbSet<Result> Results { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Group>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.name);
+                entity.Property(e => e.rule);
+                entity.HasMany(e => e.teams).WithOne();
+                entity.Property(e => e.groupSize);
+                entity.Property(e => e.participants);
+            });
+
+            modelBuilder.Entity<Pony>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.name);
+                entity.Property(e => e.race);
+                entity.Property(e => e.age);
+            });
+
+            modelBuilder.Entity<Result>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.game);
+                entity.Property(e => e.position);
+                entity.Property(e => e.finishingTime);
+                entity.Property(e => e.startingTime);
+                entity.Property(e => e.timeSum);
+                entity.Property(e => e.score);
+            });
+
+            modelBuilder.Entity<Season>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.teamName);
+                entity.Property(e => e.club);
+                entity.Property(e => e.score);
+                entity.Property(e => e.year);
+                entity.Property(e => e.placement);
+            });
+
+            modelBuilder.Entity<Team>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.club);
+                entity.Property(e => e.name);
+                entity.Property(e => e.place);
+                entity.Property(e => e.consultor);
+                entity.Property(e => e.teamSize);
+            });
+
+            modelBuilder.Entity<TeamMember>(entity =>
+            {
+                entity.HasKey(e => e.id);
+                entity.Property(e => e.firstName);
+                entity.Property(e => e.surName);
+            });
 
             modelBuilder.Entity<User>(entity =>
             {
@@ -37,6 +98,7 @@ namespace PonyLigaAPI.Models
                 entity.Property(e => e.surName);
                 entity.Property(e => e.loginName);
                 entity.Property(e => e.passwordHash);
+                entity.Property(e => e.userPrivileges);
             });
         }
 
