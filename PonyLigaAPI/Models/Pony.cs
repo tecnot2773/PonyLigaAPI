@@ -11,5 +11,7 @@ namespace PonyLigaAPI.Models
         public String name { get; set; }
         public String race { get; set; }
         public String age { get; set; }
+
+        public ICollection<Team> teams { get; set; }
     }
 }

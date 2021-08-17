@@ -13,6 +13,11 @@ namespace PonyLigaAPI.Models
         public string place { get; set; }
         public string consultor { get; set; }
         public int teamSize { get; set; }
-        public Group Group { get; set; }
+        public int groupId { get; set; }
+        public Group group { get; set; }
+
+        public ICollection<Pony> ponies { get; set; }
+        public ICollection<TeamMember> teamMembers { get; set; }
+        public ICollection<Result> results { get; set; }
     }
 }

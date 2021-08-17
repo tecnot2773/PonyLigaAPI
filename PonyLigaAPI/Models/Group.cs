@@ -10,8 +10,7 @@ namespace PonyLigaAPI.Models
         public int id { get; set; }
         public String name { get; set; }
         public int rule { get; set; }
-        public int teamId { get; set; }
-        public List<Team> teams { get; set; }
+        public ICollection<Team> teams { get; set; }
         public int groupSize { get; set; }
         public String participants { get; set; }
     }

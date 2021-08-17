@@ -14,5 +14,7 @@ namespace PonyLigaAPI.Models
         public String startingTime { get; set; }
         public String timeSum { get; set; }
         public int score { get; set; }
+        public int teamId { get; set; }
+        public Team team { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace PonyLigaAPI.Models
 {
-    public class TeamMember
+    public class TeamPonies
     {
         public int id { get; set; }
-        public String firstName { get; set; }
-        public String surName { get; set; }
         public int teamId { get; set; }
         public Team team { get; set; }
+        public int ponyId { get; set; }
+        public Pony pony { get; set; }
     }
 }

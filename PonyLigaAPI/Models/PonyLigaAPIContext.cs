@@ -37,68 +37,74 @@ namespace PonyLigaAPI.Models
 
             modelBuilder.Entity<Group>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.name);
-                entity.Property(e => e.rule);
-                entity.HasMany(e => e.teams).WithOne();
-                entity.Property(e => e.groupSize);
-                entity.Property(e => e.participants);
+                entity.HasKey(g => g.id);
+                entity.Property(g => g.name);
+                entity.Property(g => g.rule);
+                entity.Property(g => g.groupSize);
+                entity.Property(g => g.participants);
+                entity.HasMany(g => g.teams).WithOne(e => e.group).HasPrincipalKey("id");
             });
 
             modelBuilder.Entity<Pony>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.name);
-                entity.Property(e => e.race);
-                entity.Property(e => e.age);
+                entity.HasKey(p => p.id);
+                entity.Property(p => p.name);
+                entity.Property(p => p.race);
+                entity.Property(p => p.age);
+                entity.HasMany(p => p.teams).WithMany(t => t.ponies).UsingEntity(r => r.ToTable("TeamPonies"));
             });
 
             modelBuilder.Entity<Result>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.game);
-                entity.Property(e => e.position);
-                entity.Property(e => e.finishingTime);
-                entity.Property(e => e.startingTime);
-                entity.Property(e => e.timeSum);
-                entity.Property(e => e.score);
+                entity.HasKey(r => r.id);
+                entity.Property(r => r.game);
+                entity.Property(r => r.position);
+                entity.Property(r => r.finishingTime);
+                entity.Property(r => r.startingTime);
+                entity.Property(r => r.timeSum);
+                entity.Property(r => r.score);
+                entity.HasOne(r => r.team).WithMany(r => r.results).HasForeignKey(r => r.teamId);
             });
 
             modelBuilder.Entity<Season>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.teamName);
-                entity.Property(e => e.club);
-                entity.Property(e => e.score);
-                entity.Property(e => e.year);
-                entity.Property(e => e.placement);
+                entity.HasKey(s => s.id);
+                entity.Property(s => s.teamName);
+                entity.Property(s => s.club);
+                entity.Property(s => s.score);
+                entity.Property(s => s.year);
+                entity.Property(s => s.placement);
             });
 
             modelBuilder.Entity<Team>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.club);
-                entity.Property(e => e.name);
-                entity.Property(e => e.place);
-                entity.Property(e => e.consultor);
-                entity.Property(e => e.teamSize);
+                entity.HasKey(t => t.id);
+                entity.Property(t => t.club);
+                entity.Property(t => t.name);
+                entity.Property(t => t.place);
+                entity.Property(t => t.consultor);
+                entity.Property(t => t.teamSize);
+                entity.HasOne(t => t.group).WithMany(g => g.teams).HasForeignKey(t => t.groupId);
+                entity.HasMany(e => e.results).WithOne(e => e.team).HasPrincipalKey("id");
+                entity.HasMany(t => t.ponies).WithMany(p => p.teams).UsingEntity(r => r.ToTable("TeamPonies"));
             });
 
             modelBuilder.Entity<TeamMember>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.firstName);
-                entity.Property(e => e.surName);
+                entity.HasKey(t => t.id);
+                entity.Property(t => t.firstName);
+                entity.Property(t => t.surName);
+                entity.HasOne(t => t.team).WithMany(t => t.teamMembers).HasForeignKey(t => t.teamId);
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.id);
-                entity.Property(e => e.firstName);
-                entity.Property(e => e.surName);
-                entity.Property(e => e.loginName);
-                entity.Property(e => e.passwordHash);
-                entity.Property(e => e.userPrivileges);
+                entity.HasKey(u => u.id);
+                entity.Property(u => u.firstName);
+                entity.Property(u => u.surName);
+                entity.Property(u => u.loginName);
+                entity.Property(u => u.passwordHash);
+                entity.Property(u => u.userPrivileges);
             });
         }
 
