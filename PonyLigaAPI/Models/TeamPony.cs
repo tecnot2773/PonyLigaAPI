@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace PonyLigaAPI.Models
 {
-    public class TeamPonies
+    public class TeamPony
     {
-        public int id { get; set; }
+
         public int teamId { get; set; }
         public Team team { get; set; }
         public int ponyId { get; set; }

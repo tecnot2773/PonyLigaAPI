@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Text.RegularExpressions;
+using PonyLigaAPI.Models;
 
 
 namespace PonyLigaAPI.Models
@@ -30,7 +31,9 @@ namespace PonyLigaAPI.Models
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<TeamPony> TeamPonies { get; set; }
         public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -51,7 +54,7 @@ namespace PonyLigaAPI.Models
                 entity.Property(p => p.name);
                 entity.Property(p => p.race);
                 entity.Property(p => p.age);
-                entity.HasMany(p => p.teams).WithMany(t => t.ponies).UsingEntity(r => r.ToTable("TeamPonies"));
+                //entity.HasMany(p => p.teams).WithMany(t => t.ponies).UsingEntity(t => t.ToTable("TeamPonies"));
             });
 
             modelBuilder.Entity<Result>(entity =>
@@ -86,7 +89,7 @@ namespace PonyLigaAPI.Models
                 entity.Property(t => t.teamSize);
                 entity.HasOne(t => t.group).WithMany(g => g.teams).HasForeignKey(t => t.groupId);
                 entity.HasMany(e => e.results).WithOne(e => e.team).HasPrincipalKey("id");
-                entity.HasMany(t => t.ponies).WithMany(p => p.teams).UsingEntity(r => r.ToTable("TeamPonies"));
+                //entity.HasMany(t => t.ponies).WithMany(p => p.teams).UsingEntity(r => r.ToTable("TeamPonies"));
             });
 
             modelBuilder.Entity<TeamMember>(entity =>
@@ -105,6 +108,14 @@ namespace PonyLigaAPI.Models
                 entity.Property(u => u.loginName);
                 entity.Property(u => u.passwordHash);
                 entity.Property(u => u.userPrivileges);
+            });
+
+            // Pony - Team Relation
+            modelBuilder.Entity<TeamPony>(entity =>
+            {
+                entity.HasKey(t => new { t.ponyId, t.teamId } );
+                entity.HasOne(t => t.pony).WithMany(t => t.teamPonies).HasForeignKey(t => t.ponyId);
+                entity.HasOne(t => t.team).WithMany(t => t.teamPonies).HasForeignKey(t => t.teamId);
             });
         }
 

@@ -41,8 +41,6 @@ namespace PonyLigaAPI.Controllers
             }
 
             return @groups;
-
-            //return await _context.Groups.ToListAsync();
         }
 
         // GET: api/Group/5

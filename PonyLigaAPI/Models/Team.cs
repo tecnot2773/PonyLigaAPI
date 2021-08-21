@@ -19,5 +19,6 @@ namespace PonyLigaAPI.Models
         public ICollection<Pony> ponies { get; set; }
         public ICollection<TeamMember> teamMembers { get; set; }
         public ICollection<Result> results { get; set; }
+        public ICollection<TeamPony> teamPonies { get; set; }
     }
 }

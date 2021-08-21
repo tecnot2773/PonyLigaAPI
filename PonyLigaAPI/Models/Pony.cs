@@ -13,5 +13,6 @@ namespace PonyLigaAPI.Models
         public String age { get; set; }
 
         public ICollection<Team> teams { get; set; }
+        public ICollection<TeamPony> teamPonies { get; set; }
     }
 }

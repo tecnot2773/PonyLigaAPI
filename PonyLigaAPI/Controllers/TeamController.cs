@@ -26,14 +26,37 @@ namespace PonyLigaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
         {
-            return await _context.Teams.ToListAsync();
+            var teams = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).ToListAsync();
+
+            foreach (Team team in teams)
+            {
+                foreach (TeamPony teamPony in team.teamPonies)
+                {
+                    teamPony.team = null;
+                }
+                team.group.teams = null;
+            }
+
+            if (teams == null)
+            {
+                return NotFound();
+            }
+
+            return teams;
         }
 
         // GET: api/Team/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Team>> GetTeam(int id)
         {
-            var team = await _context.Teams.FindAsync(id);
+            var team = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Where(e => e.id == id).FirstAsync();
+
+            foreach (TeamPony teamPony in team.teamPonies)
+            {
+                teamPony.team = null;
+            }
+
+            team.group.teams = null;
 
             if (team == null)
             {
