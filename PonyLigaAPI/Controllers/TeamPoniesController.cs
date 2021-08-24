@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PonyLigaAPI.Models;
+using PonyLigaAPI.Attributes;
 
 namespace PonyLigaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class TeamPoniesController : ControllerBase
     {
         private readonly PonyLigaAPIContext _context;

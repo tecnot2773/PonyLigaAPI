@@ -99,6 +99,19 @@ namespace PonyLigaAPI.Controllers
             return user;
         }
 
+        [HttpPost]
+        [Route("~/api/userlogin")]
+        public async Task<ActionResult<User>> LoginUser(User user)
+        {
+            var testuser = await _context.Users.Where(u => u.loginName == user.loginName).FirstAsync();
+
+            if (testuser.passwordHash == user.passwordHash)
+            {
+                return testuser;
+            }
+            return Unauthorized();
+        }
+
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.id == id);

@@ -60,6 +60,7 @@ namespace PonyLigaAPI.Models
             modelBuilder.Entity<Result>(entity =>
             {
                 entity.HasKey(r => r.id);
+                entity.Property(r => r.gameDate);
                 entity.Property(r => r.game);
                 entity.Property(r => r.position);
                 entity.Property(r => r.finishingTime);

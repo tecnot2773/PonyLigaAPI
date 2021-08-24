@@ -8,6 +8,7 @@ namespace PonyLigaAPI.Models
     public class Result
     {
         public int id { get; set; }
+        public String gameDate { get; set; }
         public String game { get; set; }
         public int position { get; set; }
         public String finishingTime { get; set; }

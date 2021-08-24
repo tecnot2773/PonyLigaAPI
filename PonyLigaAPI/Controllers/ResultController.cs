@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PonyLigaAPI.Models;
 using PonyLigaAPI.Attributes;
+using System.Globalization;
+using Newtonsoft.Json;
 
 namespace PonyLigaAPI.Controllers
 {
@@ -76,7 +78,14 @@ namespace PonyLigaAPI.Controllers
         // POST: api/Result
         [HttpPost]
         public async Task<ActionResult<Result>> PostResult(Result result)
-        {
+        {   
+            var gameDateFormat = new DateTime(2008, 3, 1, 7, 0, 0);
+            var finishingTimeFormat = new DateTime(2008, 3, 1, 7, 0, 0);
+            var startingTimeFormat = new DateTime(2008, 3, 1, 7, 0, 0);
+
+            result.gameDate = gameDateFormat.ToString("yyyy-MM-dd");
+            result.finishingTime = finishingTimeFormat.ToString("yyyy-MM-dd HH:mm:ss");
+            result.startingTime = startingTimeFormat.ToString("yyyy-MM-dd HH:mm:ss");
             _context.Results.Add(result);
             await _context.SaveChangesAsync();
 
