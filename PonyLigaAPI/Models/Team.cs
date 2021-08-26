@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PonyLigaAPI.Models
+{
+    public class Team
+    {
+        public int id { get; set; }
+        public string club { get; set; }
+        public string name { get; set; }
+        public string place { get; set; }
+        public string consultor { get; set; }
+        public int teamSize { get; set; }
+        public int groupId { get; set; }
+        public Group group { get; set; }
+
+        public ICollection<Pony> ponies { get; set; }
+        public ICollection<TeamMember> teamMembers { get; set; }
+        public ICollection<Result> results { get; set; }
+        public ICollection<TeamPony> teamPonies { get; set; }
+    }
+}
