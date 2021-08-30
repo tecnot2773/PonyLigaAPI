@@ -49,7 +49,7 @@ namespace PonyLigaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pony>> GetPony(int id)
         {
-            var pony = await _context.Ponies.Include(e => e.teamPonies).Where(e => e.id == id).FirstAsync();
+            var pony = await _context.Ponies.Include(e => e.teamPonies).Where(e => e.id == id).FirstOrDefaultAsync();
 
             foreach (TeamPony teamPony in pony.teamPonies)
             {

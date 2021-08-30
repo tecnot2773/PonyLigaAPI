@@ -47,7 +47,7 @@ namespace PonyLigaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamPony>> GetTeamPony(int id)
         {
-            var teamPony = await _context.TeamPonies.Include(t => t.pony).Include(t => t.team).FirstAsync();
+            var teamPony = await _context.TeamPonies.Include(t => t.pony).Include(t => t.team).FirstOrDefaultAsync();
 
 
             teamPony.team.teamPonies = null;

@@ -9,7 +9,7 @@ namespace PonyLigaAPI.Tests
     public class UserControllerUnitTest
     {
         [Fact]
-        public async Task TestGetGroupsAsync()
+        public async Task TestGetUsersAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
             var controller = new UserController(dbContext);
