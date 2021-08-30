@@ -28,6 +28,11 @@ namespace PonyLigaAPI.Controllers
         {
             var @groups = await _context.Groups.Include(e => e.teams).ToListAsync();
 
+            if (@groups == null)
+            {
+                return NotFound();
+            }
+
             foreach (Group group in groups)
             {
                 foreach (Team team in group.teams)
@@ -35,10 +40,7 @@ namespace PonyLigaAPI.Controllers
                     team.group = null;
                 }
             }
-            if (@groups == null)
-            {
-                return NotFound();
-            }
+
 
             return @groups;
         }
@@ -47,16 +49,18 @@ namespace PonyLigaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Group>> GetGroup(int id)
         {
-            var @group = await _context.Groups.Include(e => e.teams).Where(e => e.id == id).FirstAsync();
+            var @group = await _context.Groups.Include(e => e.teams).Where(e => e.id == id).FirstOrDefaultAsync();
+
+            if (@group == null)
+            {
+                return NotFound();
+            }
 
             foreach (Team team in group.teams)
             {
                 team.group = null;
             }
-            if (@group == null)
-            {
-                return NotFound();
-            }
+
 
             return @group;
         }

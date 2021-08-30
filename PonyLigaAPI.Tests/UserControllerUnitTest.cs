@@ -9,7 +9,7 @@ namespace PonyLigaAPI.Tests
     public class UserControllerUnitTest
     {
         [Fact]
-        public async Task TestGetUsersAsync()
+        public async Task TestGetGroupsAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
             var controller = new UserController(dbContext);
@@ -117,6 +117,46 @@ namespace PonyLigaAPI.Tests
             dbContext.Dispose();
 
             Assert.Equal(1, response.Value.id);
+        }
+
+        [Fact]
+        public async Task TestUserLoginAsync()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var user = new User
+            {
+                loginName = "Test",
+                passwordHash = "123123123"
+            };
+
+            var response = await controller.LoginUser(user);
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal(1, response.Value.id);
+        }
+
+        [Fact]
+        public async Task TestUserLoginFailedAsync()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var user = new User
+            {
+                loginName = "Test",
+                passwordHash = "wrongpassword"
+            };
+
+            var response = await controller.LoginUser(user);
+            var code = response.Result.ToString();
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.UnauthorizedResult",code);
         }
 
     }
