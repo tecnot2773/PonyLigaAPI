@@ -6,6 +6,7 @@ using PonyLigaAPI.Models;
 
 namespace PonyLigaAPI.Tests
 {
+    [Collection("Sequential")]
     public class GroupControllerUnitTest
     {
         [Fact]
