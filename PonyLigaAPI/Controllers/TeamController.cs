@@ -34,7 +34,10 @@ namespace PonyLigaAPI.Controllers
                 {
                     teamPony.team = null;
                 }
-                team.group.teams = null;
+                if (team.@group != null)
+                {
+                    team.@group.teams = null;
+                }
             }
 
             if (teams == null)
