@@ -28,6 +28,11 @@ namespace PonyLigaAPI.Controllers
         {
             var teams = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).ToListAsync();
 
+            if (teams == null)
+            {
+                return NotFound();
+            }
+
             foreach (Team team in teams)
             {
                 foreach (TeamPony teamPony in team.teamPonies)
@@ -40,11 +45,6 @@ namespace PonyLigaAPI.Controllers
                 }
             }
 
-            if (teams == null)
-            {
-                return NotFound();
-            }
-
             return teams;
         }
 
@@ -54,16 +54,19 @@ namespace PonyLigaAPI.Controllers
         {
             var team = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Where(e => e.id == id).FirstOrDefaultAsync();
 
+            if (team == null)
+            {
+                return NotFound();
+            }
+
             foreach (TeamPony teamPony in team.teamPonies)
             {
                 teamPony.team = null;
             }
 
-            team.group.teams = null;
-
-            if (team == null)
+            if (team.group != null)
             {
-                return NotFound();
+                team.group.teams = null;
             }
 
             return team;
@@ -78,7 +81,9 @@ namespace PonyLigaAPI.Controllers
                 return BadRequest();
             }
 
+            var groupId = team.groupId; // Need to cache the groupId since it would be unset because of it being an optional variable.
             _context.Entry(team).State = EntityState.Modified;
+            team.groupId = groupId;
 
             try
             {
