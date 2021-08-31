@@ -28,18 +28,38 @@ namespace PonyLigaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Result>>> GetResults()
         {
-            return await _context.Results.ToListAsync();
+            var results = await _context.Results.Include(e => e.team).ToListAsync();
+
+            if (results == null || results.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (Result result in results)
+            {
+                if (result.team != null)
+                {
+                    result.team.results = null;
+                }
+            }
+
+            return results;
         }
 
         // GET: api/Result/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Result>> GetResult(int id)
         {
-            var result = await _context.Results.FindAsync(id);
+            var result = await _context.Results.Include(e => e.team).Where(e => e.id == id).FirstOrDefaultAsync();
 
             if (result == null)
             {
                 return NotFound();
+            }
+
+            if (result.team != null)
+            {
+                result.team.results = null;
             }
 
             return result;
@@ -79,13 +99,6 @@ namespace PonyLigaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Result>> PostResult(Result result)
         {   
-            var gameDateFormat = new DateTime(2008, 3, 1, 7, 0, 0);
-            var finishingTimeFormat = new DateTime(2008, 3, 1, 7, 0, 0);
-            var startingTimeFormat = new DateTime(2008, 3, 1, 7, 0, 0);
-
-            result.gameDate = gameDateFormat.ToString("yyyy-MM-dd");
-            result.finishingTime = finishingTimeFormat.ToString("yyyy-MM-dd HH:mm:ss");
-            result.startingTime = startingTimeFormat.ToString("yyyy-MM-dd HH:mm:ss");
             _context.Results.Add(result);
             await _context.SaveChangesAsync();
 

@@ -64,9 +64,7 @@ namespace PonyLigaAPI.Models
                 entity.Property(r => r.gameDate);
                 entity.Property(r => r.game);
                 entity.Property(r => r.position);
-                entity.Property(r => r.finishingTime);
-                entity.Property(r => r.startingTime);
-                entity.Property(r => r.timeSum);
+                entity.Property(r => r.time);
                 entity.Property(r => r.score);
                 entity.HasOne(r => r.team).WithMany(r => r.results).HasForeignKey(r => r.teamId);
             });
