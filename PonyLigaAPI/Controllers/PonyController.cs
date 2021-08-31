@@ -49,7 +49,7 @@ namespace PonyLigaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Pony>> GetPony(int id)
         {
-            var pony = await _context.Ponies.Include(e => e.teamPonies).Where(e => e.id == id).FirstAsync();
+            var pony = await _context.Ponies.Include(e => e.teamPonies).Where(e => e.id == id).FirstOrDefaultAsync();
 
             foreach (TeamPony teamPony in pony.teamPonies)
             {
@@ -99,7 +99,27 @@ namespace PonyLigaAPI.Controllers
         public async Task<ActionResult<Pony>> PostPony(Pony pony)
         {
             _context.Ponies.Add(pony);
+
             await _context.SaveChangesAsync();
+
+            if (pony.teamId != null)
+            {
+                _context.TeamPonies.Add(new TeamPony
+                {
+                    ponyId = pony.id,
+                    teamId = (int)pony.teamId
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            if (pony.teamPonies != null)
+            {
+                foreach (TeamPony teamPony in pony.teamPonies)
+                {
+                    teamPony.pony.teamPonies = null;
+                }
+            }
 
             return CreatedAtAction("GetPony", new { id = pony.id }, pony);
         }

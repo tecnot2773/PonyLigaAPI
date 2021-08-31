@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Text.RegularExpressions;
 using PonyLigaAPI.Models;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace PonyLigaAPI.Models
 {
@@ -15,6 +15,7 @@ namespace PonyLigaAPI.Models
 
         public PonyLigaAPIContext(DbContextOptions<PonyLigaAPIContext> options) : base(options) { }
 
+        [ExcludeFromCodeCoverage]
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -63,9 +64,7 @@ namespace PonyLigaAPI.Models
                 entity.Property(r => r.gameDate);
                 entity.Property(r => r.game);
                 entity.Property(r => r.position);
-                entity.Property(r => r.finishingTime);
-                entity.Property(r => r.startingTime);
-                entity.Property(r => r.timeSum);
+                entity.Property(r => r.time);
                 entity.Property(r => r.score);
                 entity.HasOne(r => r.team).WithMany(r => r.results).HasForeignKey(r => r.teamId);
             });

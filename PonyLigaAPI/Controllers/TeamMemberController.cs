@@ -26,18 +26,39 @@ namespace PonyLigaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamMember>>> GetTeamMembers()
         {
-            return await _context.TeamMembers.ToListAsync();
+            var teamMembers = await _context.TeamMembers.Include(e => e.team).ToListAsync();
+
+            if (teamMembers == null || teamMembers.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (TeamMember teamMember in teamMembers)
+            {
+                if (teamMember.team != null)
+                {
+                    teamMember.team.teamMembers = null;
+                }
+            }
+
+            return teamMembers;
+
         }
 
         // GET: api/TeamMember/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TeamMember>> GetTeamMember(int id)
         {
-            var teamMember = await _context.TeamMembers.FindAsync(id);
+            var teamMember = await _context.TeamMembers.Include(e => e.team).Where(e => e.id == id).FirstOrDefaultAsync();
 
             if (teamMember == null)
             {
                 return NotFound();
+            }
+
+            if (teamMember.team != null)
+            {
+                teamMember.team.teamMembers = null;
             }
 
             return teamMember;

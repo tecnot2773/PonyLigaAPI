@@ -6,6 +6,7 @@ using Xunit;
 
 namespace PonyLigaAPI.Tests
 {
+    [Collection("Sequential")]
     public class DatabaseUnitTest
     {
         [Fact]
