@@ -59,6 +59,51 @@ namespace PonyLigaAPI.Tests
 
 
         [Fact]
+        public async Task TestPutUserAsyncBadRequest()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var id = 2;
+            var newName = "New Name";
+            var user = await controller.GetUser(1);
+
+            user.Value.firstName = newName;
+            
+            var response = await controller.PutUser(id, user.Value);
+            var code = response.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.BadRequestResult", code);
+        }
+
+        [Fact]
+        public async Task TestPutUserAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var user = new User
+            {
+                id = 2,
+                firstName = "Test",
+                surName = "Test",
+                loginName = "Test",
+                passwordHash = "123123123"
+            };
+
+            var response = await controller.PutUser(2, user);
+            var code = response.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
+        }
+
+        [Fact]
         public async Task TestPutUserAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
@@ -69,7 +114,7 @@ namespace PonyLigaAPI.Tests
             var user = await controller.GetUser(id);
 
             user.Value.firstName = newName;
-            
+
             var response = await controller.PutUser(id, user.Value);
 
             user = await controller.GetUser(id);
@@ -121,6 +166,21 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
+        public async Task TestDeleteUserAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var response = await controller.DeleteUser(2);
+            var code = response.Result.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
+        }
+
+        [Fact]
         public async Task TestUserLoginAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
@@ -141,7 +201,7 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestUserLoginFailedAsync()
+        public async Task TestUserLoginWrongPasswordAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
             var controller = new UserController(dbContext);
@@ -158,6 +218,26 @@ namespace PonyLigaAPI.Tests
             dbContext.Dispose();
 
             Assert.Equal("Microsoft.AspNetCore.Mvc.UnauthorizedResult",code);
+        }
+
+        [Fact]
+        public async Task TestUserLoginWrongLoginNamedAsync()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new UserController(dbContext);
+
+            var user = new User
+            {
+                loginName = "Wrong name",
+                passwordHash = "123123123"
+            };
+
+            var response = await controller.LoginUser(user);
+            var code = response.Result.ToString();
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.UnauthorizedResult", code);
         }
 
     }

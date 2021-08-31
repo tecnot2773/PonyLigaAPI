@@ -28,7 +28,7 @@ namespace PonyLigaAPI.Controllers
         {
             var @groups = await _context.Groups.Include(e => e.teams).ToListAsync();
 
-            if (@groups == null)
+            if (@groups == null || groups.Count == 0)
             {
                 return NotFound();
             }

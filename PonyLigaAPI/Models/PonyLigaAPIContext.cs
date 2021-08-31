@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Text.RegularExpressions;
 using PonyLigaAPI.Models;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace PonyLigaAPI.Models
 {
@@ -15,6 +15,7 @@ namespace PonyLigaAPI.Models
 
         public PonyLigaAPIContext(DbContextOptions<PonyLigaAPIContext> options) : base(options) { }
 
+        [ExcludeFromCodeCoverage]
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

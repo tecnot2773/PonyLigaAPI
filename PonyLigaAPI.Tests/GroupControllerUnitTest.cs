@@ -26,6 +26,23 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
+        public async Task TestGetGroupsAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new GroupController(dbContext);
+
+            _ = controller.DeleteGroup(1);
+            var response = await controller.GetGroups();
+
+            var code = response.Result.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
+        }
+
+        [Fact]
         public async Task TestGetGroupAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
@@ -56,6 +73,50 @@ namespace PonyLigaAPI.Tests
             Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
         }
 
+        [Fact]
+        public async Task TestPutGroupAsyncBadRequest()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new GroupController(dbContext);
+
+            var id = 2;
+            var newName = "New Name";
+            var user = await controller.GetGroup(1);
+
+            user.Value.name = newName;
+
+            var response = await controller.PutGroup(id, user.Value);
+            var code = response.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.BadRequestResult", code);
+        }
+
+        [Fact]
+        public async Task TestPutGroupAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new GroupController(dbContext);
+
+            var group = new Group
+            {
+                id = 2,
+                name = "PonyGroup",
+                rule = 1,
+                groupSize = 3,
+                participants = "Merle, Jonas"
+            };
+
+            var response = await controller.PutGroup(2, group);
+            var code = response.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
+        }
 
         [Fact]
         public async Task TestPutGroupAsync()
@@ -103,6 +164,21 @@ namespace PonyLigaAPI.Tests
             dbContext.Dispose();
 
             Assert.Equal(2, newGroup.Value.id);
+        }
+
+        [Fact]
+        public async Task TestDeleteGroupAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new GroupController(dbContext);
+
+            var response = await controller.DeleteGroup(2);
+            var code = response.Result.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
         }
 
         [Fact]

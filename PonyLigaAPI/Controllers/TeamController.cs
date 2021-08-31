@@ -28,7 +28,7 @@ namespace PonyLigaAPI.Controllers
         {
             var teams = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).ToListAsync();
 
-            if (teams == null)
+            if (teams == null || teams.Count == 0)
             {
                 return NotFound();
             }
@@ -109,7 +109,27 @@ namespace PonyLigaAPI.Controllers
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
             _context.Teams.Add(team);
+
             await _context.SaveChangesAsync();
+
+            if (team.ponyId != null)
+            {
+                _context.TeamPonies.Add(new TeamPony
+                {
+                    ponyId = (int)team.ponyId,
+                    teamId = team.id
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            if (team.teamPonies != null)
+            {
+                foreach (TeamPony teamPony in team.teamPonies)
+                {
+                    teamPony.team.teamPonies = null;
+                }
+            }
 
             return CreatedAtAction("GetTeam", new { id = team.id }, team);
         }

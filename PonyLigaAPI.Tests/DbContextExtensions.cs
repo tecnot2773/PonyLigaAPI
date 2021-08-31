@@ -36,6 +36,19 @@ namespace PonyLigaAPI.Tests
                 groupId = 1
             });
 
+            dbContext.Ponies.Add(new Pony
+            {
+                name = "Pony",
+                race = "Horse",
+                age = "12"
+            });
+
+            dbContext.TeamPonies.Add(new TeamPony
+            {
+                teamId = 1,
+                ponyId =1
+            });
+
             dbContext.SaveChanges();
         }
     }

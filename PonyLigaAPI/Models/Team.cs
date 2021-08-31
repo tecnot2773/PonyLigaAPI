@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +17,9 @@ namespace PonyLigaAPI.Models
         public int teamSize { get; set; }
         public int? groupId { get; set; }
         public Group group { get; set; }
+
+        [NotMapped]
+        public int? ponyId { get; set; }
 
         public ICollection<Pony> ponies { get; set; }
         public ICollection<TeamMember> teamMembers { get; set; }
