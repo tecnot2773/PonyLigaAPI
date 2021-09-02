@@ -49,6 +49,16 @@ namespace PonyLigaAPI.Tests
                 ponyId =1
             });
 
+            dbContext.Results.Add(new Result
+            {
+                gameDate = new DateTime(),
+                game = "Springen",
+                time = "10:10:10.111",
+                score = 10,
+                teamId = 1,
+                position = 1
+            });
+
             dbContext.SaveChanges();
         }
     }

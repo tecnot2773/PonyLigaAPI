@@ -35,7 +35,7 @@ namespace PonyLigaAPI.Controllers
                     teamPony.pony = null;
                 }
             }
-            if (ponies == null)
+            if (ponies == null || ponies.Count == 0)
             {
                 return NotFound();
             }
@@ -51,14 +51,14 @@ namespace PonyLigaAPI.Controllers
         {
             var pony = await _context.Ponies.Include(e => e.teamPonies).Where(e => e.id == id).FirstOrDefaultAsync();
 
-            foreach (TeamPony teamPony in pony.teamPonies)
-            {
-                teamPony.pony = null;
-            }
-
             if (pony == null)
             {
                 return NotFound();
+            }
+
+            foreach (TeamPony teamPony in pony.teamPonies)
+            {
+                teamPony.pony = null;
             }
 
             return pony;
