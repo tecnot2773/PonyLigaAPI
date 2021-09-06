@@ -7,15 +7,15 @@ using PonyLigaAPI.Models;
 namespace PonyLigaAPI.Tests
 {
     [Collection("Sequential")]
-    public class TeamControllerUnitTest
+    public class ResultControllerUnitTest
     {
         [Fact]
-        public async Task TestGetTeamsAsync()
+        public async Task TestGetResultsAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var response = await controller.GetTeams();
+            var response = await controller.GetResults();
 
             var value = response.Value;
 
@@ -26,13 +26,13 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestGetTeamsAsyncNotFound()
+        public async Task TestGetResultsAsyncNotFound()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            _ = controller.DeleteTeam(1);
-            var response = await controller.GetTeams();
+            _ = controller.DeleteResult(1);
+            var response = await controller.GetResults();
 
             var code = response.Result.ToString();
 
@@ -43,12 +43,12 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestGetTeamAsync()
+        public async Task TestGetResultAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var response = await controller.GetTeam(1);
+            var response = await controller.GetResult(1);
 
             var value = response.Value;
 
@@ -59,12 +59,12 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestGetTeamAsyncFalse()
+        public async Task TestGetResultAsyncFalse()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var response = await controller.GetTeam(2);
+            var response = await controller.GetResult(2);
             var code = response.Result.ToString();
 
             dbContext.Database.EnsureDeleted();
@@ -74,18 +74,18 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestPutTeamAsyncBadRequest()
+        public async Task TestPutResultAsyncBadRequest()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
             var id = 2;
-            var newName = "New Name";
-            var team = await controller.GetTeam(1);
+            var newGame = "Reiten";
+            var result = await controller.GetResult(1);
 
-            team.Value.name = newName;
+            result.Value.game = newGame;
 
-            var response = await controller.PutTeam(id, team.Value);
+            var response = await controller.PutResult(id, result.Value);
             var code = response.ToString();
 
             dbContext.Database.EnsureDeleted();
@@ -95,23 +95,22 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestPutTeamAsyncNotFound()
+        public async Task TestPutResultAsyncNotFound()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var team = new Team
+            var result = new Result
             {
                 id = 2,
-                club = "München",
-                name = "PonyGroup",
-                place = "München",
-                consultor = "Jürgen",
-                teamSize = 2,
-                groupId = 1
+                gameDate = new DateTime(),
+                game = "Springen",
+                time = "10:10:10.111",
+                score = 10,
+                teamId = 1
             };
 
-            var response = await controller.PutTeam(2, team);
+            var response = await controller.PutResult(2, result);
             var code = response.ToString();
 
             dbContext.Database.EnsureDeleted();
@@ -121,64 +120,61 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
-        public async Task TestPutTeamAsync()
+        public async Task TestPutResultAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
             var id = 1;
-            var newName = "New Name";
-            var team = await controller.GetTeam(id);
+            var newGame = "Reiten";
+            var team = await controller.GetResult(id);
 
-            team.Value.name = newName;
+            team.Value.game = newGame;
 
-            var response = await controller.PutTeam(id, team.Value);
+            var response = await controller.PutResult(id, team.Value);
 
-            team = await controller.GetTeam(id);
+            team = await controller.GetResult(id);
 
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();
 
-            Assert.Equal(newName, team.Value.name);
+            Assert.Equal(newGame, team.Value.game);
         }
 
         [Fact]
-        public async Task TestPostTeamAsync()
+        public async Task TestPostResultAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var team = new Team
+            var result = new Result
             {
-                club = "München 2",
-                name = "PonyGroup München 2",
-                place = "München",
-                consultor = "Peter",
-                teamSize = 2,
-                groupId = 1,
-                ponyId = 1
+                gameDate = new DateTime(),
+                game = "Springen",
+                time = "10:10:10.111",
+                score = 10,
+                teamId = 1
             };
-            team.ponies = null;
-            team.teamMembers = null;
-            team.results = null;
 
-            var response = await controller.PostTeam(team);
+            result.team = null;
 
-            var newTeam = await controller.GetTeam(2);
+            var response = await controller.PostResult(result);
+
+            var newResult = await controller.GetResult(2);
 
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();
 
-            Assert.Equal(2, newTeam.Value.id);
+            Assert.Equal(2, newResult.Value.id);
         }
 
         [Fact]
-        public async Task TestDeleteTeamAsyncNotFound()
+        public async Task TestDeleteResultAsyncNotFound()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var response = await controller.DeleteTeam(2);
+            var response = await controller.DeleteResult(2);
             var code = response.Result.ToString();
 
             dbContext.Database.EnsureDeleted();
@@ -188,12 +184,12 @@ namespace PonyLigaAPI.Tests
 
         }
         [Fact]
-        public async Task TestDeleteTeamAsync()
+        public async Task TestDeleteResultAsync()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
-            var controller = new TeamController(dbContext);
+            var controller = new ResultController(dbContext);
 
-            var response = await controller.DeleteTeam(1);
+            var response = await controller.DeleteResult(1);
 
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();

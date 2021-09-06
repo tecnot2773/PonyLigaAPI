@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PonyLigaAPI.Models;
 using PonyLigaAPI.Attributes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PonyLigaAPI.Controllers
 {
+    [ExcludeFromCodeCoverage] // NYI
     [Route("api/[controller]")]
     [ApiController]
     [ApiKey]

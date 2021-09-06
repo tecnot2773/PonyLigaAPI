@@ -70,12 +70,8 @@ namespace PonyLigaAPI.Controllers
                 _context.TeamPonies.Add(teamPony);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if(ex is DbUpdateException || ex is InvalidOperationException)
-                {
-                    return Conflict();
-                }
                 return Conflict();
             }
 

@@ -64,6 +64,30 @@ namespace PonyLigaAPI.Controllers
             return teamMember;
         }
 
+        // GET: api/Team/TeamMember
+        [HttpGet]
+        [Route("~/api/team/{id}/teammember")]
+        public async Task<ActionResult<IEnumerable<TeamMember>>> GetTeamMembersByTeamId(int id)
+        {
+            var teamMembers = await _context.TeamMembers.Where(e => e.teamId == id).ToListAsync();
+
+            if (teamMembers == null || teamMembers.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (TeamMember teamMember in teamMembers)
+            {
+                if (teamMember.team != null)
+                {
+                    teamMember.team.teamMembers = null;
+                }
+            }
+
+            return teamMembers;
+
+        }
+
         // PUT: api/TeamMember/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTeamMember(int id, TeamMember teamMember)

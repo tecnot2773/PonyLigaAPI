@@ -59,6 +59,13 @@ namespace PonyLigaAPI.Tests
                 position = 1
             });
 
+            dbContext.TeamMembers.Add(new TeamMember
+            {
+                firstName = "Hans",
+                surName = "Jürgen",
+                teamId = 1
+            });
+
             dbContext.SaveChanges();
         }
     }
