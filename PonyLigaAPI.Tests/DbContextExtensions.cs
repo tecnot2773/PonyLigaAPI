@@ -30,7 +30,6 @@ namespace PonyLigaAPI.Tests
             {
                 club = "München",
                 name = "PonyGroup",
-                place = "München",
                 consultor = "Jürgen",
                 teamSize = 2,
                 groupId = 1
@@ -46,7 +45,7 @@ namespace PonyLigaAPI.Tests
             dbContext.TeamPonies.Add(new TeamPony
             {
                 teamId = 1,
-                ponyId =1
+                ponyId = 1
             });
 
             dbContext.Results.Add(new Result

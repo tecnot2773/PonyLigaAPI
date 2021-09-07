@@ -65,6 +65,40 @@ namespace PonyLigaAPI.Controllers
             return result;
         }
 
+        // GET: api/Team/TeamMember
+        [HttpGet]
+        [Route("~/api/result/summary")]
+        public async Task<ActionResult<IEnumerable<Team>>> GetResultSummary()
+        {
+            var teams = await _context.Teams.ToListAsync();
+
+            if (teams == null || teams.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (Team team in teams)
+            {
+                team.results = await _context.Results.Where(e => e.teamId == team.id).ToListAsync();
+
+                foreach (Result result in team.results)
+                {
+                    result.team = null;
+                    team.totalScore += result.score;
+                }
+            }
+
+            List<Team> sortedTeams = teams.OrderByDescending(t => t.totalScore).ToList();
+
+            for (int i = 0; i < sortedTeams.Count(); i++)
+            {
+                sortedTeams[i].place = i + 1;
+            }
+
+            return sortedTeams;
+
+        }
+
         // PUT: api/Result/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutResult(int id, Result result)

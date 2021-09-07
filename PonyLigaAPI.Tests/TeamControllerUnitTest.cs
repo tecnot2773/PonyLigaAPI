@@ -105,7 +105,6 @@ namespace PonyLigaAPI.Tests
                 id = 2,
                 club = "München",
                 name = "PonyGroup",
-                place = "München",
                 consultor = "Jürgen",
                 teamSize = 2,
                 groupId = 1
@@ -152,7 +151,6 @@ namespace PonyLigaAPI.Tests
             {
                 club = "München 2",
                 name = "PonyGroup München 2",
-                place = "München",
                 consultor = "Peter",
                 teamSize = 2,
                 groupId = 1,

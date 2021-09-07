@@ -74,6 +74,39 @@ namespace PonyLigaAPI.Tests
         }
 
         [Fact]
+        public async Task TestGetResultSummaryAsync()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new ResultController(dbContext);
+
+            var response = await controller.GetResultSummary();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.NotEmpty(response.Value);
+        }
+
+        [Fact]
+        public async Task TestGetResultSummaryAsyncNotFound()
+        {
+            var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
+            var controller = new ResultController(dbContext);
+            var teamController = new TeamController(dbContext);
+
+            _ = await teamController.DeleteTeam(1);
+            _ = await controller.DeleteResult(1);
+            var response = await controller.GetResultSummary();
+
+            var code = response.Result.ToString();
+
+            dbContext.Database.EnsureDeleted();
+            dbContext.Dispose();
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.NotFoundResult", code);
+        }
+
+        [Fact]
         public async Task TestPutResultAsyncBadRequest()
         {
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
