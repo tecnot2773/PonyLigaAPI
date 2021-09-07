@@ -33,7 +33,7 @@ namespace PonyLigaAPI.Controllers
                 teamPony.team.teamPonies = null;
                 teamPony.pony.teamPonies = null;
             }
-            if (teamPonies == null)
+            if (teamPonies == null || teamPonies.Count == 0)
             {
                 return NotFound();
             }
@@ -44,82 +44,45 @@ namespace PonyLigaAPI.Controllers
         }
 
         // GET: api/TeamPonies/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TeamPony>> GetTeamPony(int id)
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult<TeamPony>> GetTeamPony(int teamId, int ponyId)
         {
-            var teamPony = await _context.TeamPonies.Include(t => t.pony).Include(t => t.team).FirstOrDefaultAsync();
-
-
-            teamPony.team.teamPonies = null;
-            teamPony.pony.teamPonies = null;
+            var teamPony = await _context.TeamPonies.Include(t => t.pony).Include(t => t.team).Where(e => e.ponyId == ponyId).Where(e => e.teamId == teamId).FirstOrDefaultAsync();
 
             if (teamPony == null)
             {
                 return NotFound();
             }
 
+            teamPony.team.teamPonies = null;
+            teamPony.pony.teamPonies = null;
+
+
             return teamPony;
-        }
-
-        // PUT: api/TeamPonies/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTeamPony(int id, TeamPony teamPony)
-        {
-            if (id != teamPony.ponyId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(teamPony).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeamPonyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/TeamPonies
         [HttpPost]
         public async Task<ActionResult<TeamPony>> PostTeamPony(TeamPony teamPony)
         {
-            _context.TeamPonies.Add(teamPony);
             try
             {
+                _context.TeamPonies.Add(teamPony);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (Exception)
             {
-                if (TeamPonyExists(teamPony.ponyId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return Conflict();
             }
 
-            return CreatedAtAction("GetTeamPony", new { id = teamPony.ponyId }, teamPony);
+            return CreatedAtAction("GetTeamPony", new { teamId = teamPony.teamId, ponyId = teamPony.ponyId }, teamPony);
         }
 
         // DELETE: api/TeamPonies/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<TeamPony>> DeleteTeamPony(int id)
+        [HttpDelete("{teamId}")]
+        public async Task<ActionResult<TeamPony>> DeleteTeamPony(int teamId, int ponyId)
         {
-            var teamPony = await _context.TeamPonies.FindAsync(id);
+            var teamPony = await _context.TeamPonies.FindAsync(ponyId, teamId);
             if (teamPony == null)
             {
                 return NotFound();
@@ -131,9 +94,18 @@ namespace PonyLigaAPI.Controllers
             return teamPony;
         }
 
-        private bool TeamPonyExists(int id)
-        {
-            return _context.TeamPonies.Any(e => e.ponyId == id);
-        }
+    //    private bool TeamPonyExists(int teamId, int ponyId)
+    //    {
+    //        var teamPony = _context.TeamPonies.Where(e => e.ponyId == ponyId).Where(e => e.teamId == teamId).FirstOrDefault();
+            
+    //        if (teamPony != null)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
     }
 }

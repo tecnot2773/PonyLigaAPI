@@ -12,7 +12,7 @@ namespace PonyLigaAPI.Models
         public int id { get; set; }
         public string club { get; set; }
         public string name { get; set; }
-        public string place { get; set; }
+        public int? place { get; set; }
         public string consultor { get; set; }
         public int teamSize { get; set; }
         public int? groupId { get; set; }
@@ -20,6 +20,8 @@ namespace PonyLigaAPI.Models
 
         [NotMapped]
         public int? ponyId { get; set; }
+        [NotMapped]
+        public int? totalScore { get; set; } = 0;
 
         public ICollection<Pony> ponies { get; set; }
         public ICollection<TeamMember> teamMembers { get; set; }
