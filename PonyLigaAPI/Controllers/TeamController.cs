@@ -130,7 +130,15 @@ namespace PonyLigaAPI.Controllers
                 });
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest();
+            }
+            
 
             if (team.teamPonies != null)
             {

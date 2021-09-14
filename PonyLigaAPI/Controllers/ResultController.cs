@@ -125,7 +125,7 @@ namespace PonyLigaAPI.Controllers
                     throw;
                 }
             }
-
+            var calculateScore = result.calculateScoreAsync(_context);
             return NoContent();
         }
 
@@ -135,6 +135,8 @@ namespace PonyLigaAPI.Controllers
         {   
             _context.Results.Add(result);
             await _context.SaveChangesAsync();
+
+            var calculateScore = result.calculateScoreAsync(_context);
 
             return CreatedAtAction("GetResult", new { id = result.id }, result);
         }
@@ -151,6 +153,8 @@ namespace PonyLigaAPI.Controllers
 
             _context.Results.Remove(result);
             await _context.SaveChangesAsync();
+
+            var calculateScore = result.calculateScoreAsync(_context);
 
             return result;
         }

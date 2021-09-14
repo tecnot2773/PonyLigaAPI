@@ -42,7 +42,8 @@ CREATE TABLE `teams` (
   `teamSize` INTEGER(5) DEFAULT NULL,
   `groupId` INTEGER(11) DEFAULT NULL,
   FOREIGN KEY(`groupId`) REFERENCES groups(`id`),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `teamMembers` (
