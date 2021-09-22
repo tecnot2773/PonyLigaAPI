@@ -44,12 +44,16 @@ namespace PonyLigaAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            // Adds Middleware for redirecticting HTTP Request to HTTPS
             app.UseHttpsRedirection();
 
+            // Adds Routing for Controllers
             app.UseRouting();
 
+            // Adds API Key Authorization (among others)
             app.UseAuthorization();
 
+            // Maps Controllers to Routes without specifing route names
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
