@@ -13,6 +13,7 @@ namespace PonyLigaAPI.Models
         public String game { get; set; }
         public int position { get; set; }
         public String time { get; set; }
+        public String penaltyTime { get; set; }
         public int score { get; set; }
         public int teamId { get; set; }
         public Team team { get; set; }

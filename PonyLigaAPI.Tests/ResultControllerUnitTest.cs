@@ -139,6 +139,7 @@ namespace PonyLigaAPI.Tests
                 gameDate = new DateTime(),
                 game = "Springen",
                 time = "10:10:10.111",
+                penaltyTime = "00:00",
                 score = 10,
                 teamId = 1
             };
@@ -185,6 +186,7 @@ namespace PonyLigaAPI.Tests
                 gameDate = new DateTime(),
                 game = "Springen",
                 time = "10:10:10.111",
+                penaltyTime = "00:00",
                 score = 10,
                 teamId = 1
             };

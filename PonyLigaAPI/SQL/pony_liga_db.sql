@@ -16,12 +16,13 @@ INSERT INTO `apikeys` (`id`, `name`, `apiKey`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstName` longtext DEFAULT NULL,
-  `surName` longtext DEFAULT NULL,
-  `loginName` longtext DEFAULT NULL,
-  `passwordHash` longtext DEFAULT NULL,
+  `firstName` VARCHAR(255) DEFAULT NULL,
+  `surName` VARCHAR(255) DEFAULT NULL,
+  `loginName` VARCHAR(255) DEFAULT NULL,
+  `passwordHash` VARCHAR(255) DEFAULT NULL,
   `userPrivileges` INT DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE (`loginName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
 CREATE TABLE `groups` (
@@ -69,6 +70,7 @@ CREATE TABLE `results` (
   `game` VARCHAR(255) DEFAULT NULL,
   `position` INT(11) DEFAULT NULL,
   `time` VARCHAR(255) DEFAULT NULL,
+  `penaltyTime` VARCHAR(255) DEFAULT NULL,
   `score` INT(11) DEFAULT NULL,
   `teamId` INT(11) DEFAULT NULL,
   FOREIGN KEY(`teamId`) REFERENCES teams(`id`),
