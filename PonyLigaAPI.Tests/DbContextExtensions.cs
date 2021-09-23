@@ -54,6 +54,7 @@ namespace PonyLigaAPI.Tests
                 game = "Springen",
                 time = "10:10:10.111",
                 score = 10,
+                penaltyTime = "0",
                 teamId = 1,
                 position = 1
             });
