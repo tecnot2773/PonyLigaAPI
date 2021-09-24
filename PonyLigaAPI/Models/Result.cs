@@ -45,10 +45,11 @@ namespace PonyLigaAPI.Models
                 _context.Entry(result).Property(e => e.score).IsModified = true;
                 _context.Entry(result).Property(e => e.position).IsModified = true;
                 _context.Entry(result).Property(e => e.time).IsModified = false;
+                var status = await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
-
+            
             return true;
+            
         }
     }
 }
