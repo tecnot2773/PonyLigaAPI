@@ -19,7 +19,6 @@ namespace PonyLigaAPI.Tests
 
                 Assert.Matches("server=.*;port=.*;database=pony_liga;user=.*;password=.*", connectionString);
             }
-            
         }
     }
 }
