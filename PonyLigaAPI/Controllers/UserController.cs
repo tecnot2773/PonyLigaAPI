@@ -112,7 +112,7 @@ namespace PonyLigaAPI.Controllers
                 return Unauthorized();
             }
 
-            if (dbUser.passwordHash == user.passwordEncrypt())
+            if (dbUser.comparePassword(user.passwordHash))
             {
                 dbUser.passwordHash = null;
                 return dbUser;
