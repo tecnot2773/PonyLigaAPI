@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PonyLigaAPI.Models;
 using PonyLigaAPI.Attributes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PonyLigaAPI.Controllers
 {
@@ -101,6 +102,7 @@ namespace PonyLigaAPI.Controllers
             return user;
         }
 
+        [ExcludeFromCodeCoverage]
         [HttpPost]
         [Route("~/api/userlogin")]
         public async Task<ActionResult<User>> LoginUser(User user)

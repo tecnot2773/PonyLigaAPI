@@ -20,9 +20,9 @@ namespace PonyLigaAPI.Models
         {
             ScryptEncoder encoder = new ScryptEncoder();
 
-            string hashsedPassword = encoder.Encode(this.passwordHash);
+            string hashedPassword = encoder.Encode(this.passwordHash);
 
-            return hashsedPassword;
+            return hashedPassword;
         }
 
         public bool comparePassword(String hashedPassword)
