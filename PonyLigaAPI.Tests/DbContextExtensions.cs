@@ -13,7 +13,7 @@ namespace PonyLigaAPI.Tests
             {
                 firstName = "Test",
                 surName = "Test",
-                loginName = "Test",
+                loginName = "Test123",
                 passwordHash = "123123123",
                 userPrivileges = 0
             });

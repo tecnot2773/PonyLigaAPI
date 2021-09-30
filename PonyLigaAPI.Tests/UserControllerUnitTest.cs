@@ -188,16 +188,17 @@ namespace PonyLigaAPI.Tests
 
             var user = new User
             {
-                loginName = "Test",
+                loginName = "Test2",
                 passwordHash = "123123123"
             };
-
-            var response = await controller.LoginUser(user);
+            var password = user.passwordEncrypt();
+            user.passwordHash = password;
+            var response = user.comparePassword("123123123");
 
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();
 
-            Assert.Equal(1, response.Value.id);
+            Assert.True(response);
         }
 
         [Fact]
@@ -206,13 +207,24 @@ namespace PonyLigaAPI.Tests
             var dbContext = DbContextMocker.GetPonyLigaAPIContext(Guid.NewGuid().ToString());
             var controller = new UserController(dbContext);
 
-            var user = new User
+            var testuser = new User
             {
-                loginName = "Test",
+                loginName = "Test12",
                 passwordHash = "wrongpassword"
             };
 
-            var response = await controller.LoginUser(user);
+            var user = new User
+            {
+                firstName = "Test",
+                surName = "Test",
+                loginName = "Test1234",
+                passwordHash = "123123123"
+            };
+
+            user.passwordHash = user.passwordEncrypt();
+            var response = await controller.PostUser(user);
+
+            response = await controller.LoginUser(testuser);
             var code = response.Result.ToString();
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();

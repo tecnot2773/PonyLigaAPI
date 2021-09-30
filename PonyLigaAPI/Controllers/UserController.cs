@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PonyLigaAPI.Models;
 using PonyLigaAPI.Attributes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PonyLigaAPI.Controllers
 {
@@ -39,7 +40,7 @@ namespace PonyLigaAPI.Controllers
             {
                 return NotFound();
             }
-
+            
             return user;
         }
 
@@ -51,7 +52,7 @@ namespace PonyLigaAPI.Controllers
             {
                 return BadRequest();
             }
-
+            user.passwordHash = user.passwordEncrypt();
             _context.Entry(user).State = EntityState.Modified;
 
             try
@@ -77,9 +78,11 @@ namespace PonyLigaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            user.passwordHash = user.passwordEncrypt();
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            user.passwordHash = null;
             return CreatedAtAction("GetUser", new { id = user.id }, user);
         }
 
@@ -99,20 +102,22 @@ namespace PonyLigaAPI.Controllers
             return user;
         }
 
+        [ExcludeFromCodeCoverage]
         [HttpPost]
         [Route("~/api/userlogin")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {
-            var newUser = await _context.Users.Where(u => u.loginName == user.loginName).FirstOrDefaultAsync();
+            var dbUser = await _context.Users.Where(u => u.loginName == user.loginName).FirstOrDefaultAsync();
 
-            if (newUser == null)
+            if (dbUser == null)
             {
                 return Unauthorized();
             }
 
-            if (newUser.passwordHash == user.passwordHash)
+            if (dbUser.comparePassword(user.passwordHash))
             {
-                return newUser;
+                dbUser.passwordHash = null;
+                return dbUser;
             }
             return Unauthorized();
         }
