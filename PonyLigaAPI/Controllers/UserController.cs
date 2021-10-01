@@ -102,7 +102,6 @@ namespace PonyLigaAPI.Controllers
             return user;
         }
 
-        [ExcludeFromCodeCoverage]
         [HttpPost]
         [Route("~/api/userlogin")]
         public async Task<ActionResult<User>> LoginUser(User user)
