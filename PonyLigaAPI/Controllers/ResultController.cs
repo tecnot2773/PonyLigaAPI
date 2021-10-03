@@ -134,8 +134,8 @@ namespace PonyLigaAPI.Controllers
         public async Task<ActionResult<Result>> PostResult(Result result)
         {   
             _context.Results.Add(result);
-            await _context.SaveChangesAsync();
-
+            var status = await _context.SaveChangesAsync();
+            
             var calculateScore = result.calculateScoreAsync(_context);
 
             return CreatedAtAction("GetResult", new { id = result.id }, result);

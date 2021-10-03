@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,16 +39,19 @@ namespace PonyLigaAPI.Models
             {
                 result.score = score;
                 result.position = position;
+                //var time = _context.Entry(result).Property(e => e.time).OriginalValue;
+                //result.time = time;
 
                 position++;
                 score--;
 
+                _context.Entry(result).State = EntityState.Modified;
                 _context.Entry(result).Property(e => e.score).IsModified = true;
                 _context.Entry(result).Property(e => e.position).IsModified = true;
                 _context.Entry(result).Property(e => e.time).IsModified = false;
-                var status = await _context.SaveChangesAsync();
+
             }
-            
+            var status = _context.SaveChanges();
             return true;
             
         }
