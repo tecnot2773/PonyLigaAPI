@@ -25,6 +25,11 @@ CREATE TABLE `users` (
   UNIQUE (`loginName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
+/* Insert default User */
+INSERT INTO `users` (`id`, `firstName`, `surName`, `loginName`, `passwordHash`, `userPrivileges`) VALUES
+(1, 'Admin', 'Admin', 'admin', '$s2$16384$8$1$s0o8k7MceT4+GC1DJZBTDsbRFPI7dOEVAp8P8HtLPfY=$M3SPtl5VIQjXTEzkh97cvo7CEphA0/F+f5wGPDndsso=', 1);
+
+
 CREATE TABLE `groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) DEFAULT NULL,
