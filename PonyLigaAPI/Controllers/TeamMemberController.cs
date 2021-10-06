@@ -102,6 +102,8 @@ namespace PonyLigaAPI.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+
+                teamMember.updateTeamMemberCount(_context);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -125,6 +127,13 @@ namespace PonyLigaAPI.Controllers
             _context.TeamMembers.Add(teamMember);
             await _context.SaveChangesAsync();
 
+            teamMember.updateTeamMemberCount(_context);
+
+            if (teamMember.team != null)
+            {
+                teamMember.team.teamMembers = null;
+            }
+
             return CreatedAtAction("GetTeamMember", new { id = teamMember.id }, teamMember);
         }
 
@@ -140,6 +149,8 @@ namespace PonyLigaAPI.Controllers
 
             _context.TeamMembers.Remove(teamMember);
             await _context.SaveChangesAsync();
+
+            teamMember.updateTeamMemberCount(_context);
 
             return teamMember;
         }
