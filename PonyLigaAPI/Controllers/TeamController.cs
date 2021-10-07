@@ -26,7 +26,7 @@ namespace PonyLigaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeams()
         {
-            var teams = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Include(e => e.results).ToListAsync();
+            var teams = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Include(e => e.results).Include(e => e.teamMembers).ToListAsync();
 
             if (teams == null || teams.Count == 0)
             {
@@ -47,6 +47,10 @@ namespace PonyLigaAPI.Controllers
                 {
                     result.team = null;
                 }
+                foreach (TeamMember teamMember in team.teamMembers)
+                {
+                    teamMember.team = null;
+                }
             }
 
             return teams;
@@ -56,7 +60,7 @@ namespace PonyLigaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Team>> GetTeam(int id)
         {
-            var team = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Include(e => e.results).Where(e => e.id == id).FirstOrDefaultAsync();
+            var team = await _context.Teams.Include(e => e.teamPonies).Include(e => e.group).Include(e => e.results).Include(e => e.teamMembers).Where(e => e.id == id).FirstOrDefaultAsync();
 
             if (team == null)
             {
@@ -76,6 +80,11 @@ namespace PonyLigaAPI.Controllers
             if (team.group != null)
             {
                 team.group.teams = null;
+            }
+
+            foreach (TeamMember teamMember in team.teamMembers)
+            {
+                teamMember.team = null;
             }
 
             return team;

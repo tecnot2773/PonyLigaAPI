@@ -27,7 +27,14 @@ namespace PonyLigaAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            
+            foreach(User user in users)
+            {
+                user.passwordHash = null;
+            }
+
+            return users;
         }
 
         // GET: api/User/5
@@ -35,6 +42,7 @@ namespace PonyLigaAPI.Controllers
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
+            user.passwordHash = null;
 
             if (user == null)
             {
@@ -98,6 +106,7 @@ namespace PonyLigaAPI.Controllers
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+            user.passwordHash = null;
 
             return user;
         }
